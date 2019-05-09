@@ -8,7 +8,7 @@ var port = 3000;
 var output = path.resolve(__dirname, '../keygen_files');
 
 console.log('Output directory: ', output);
-
+// app.use(express.bodyParser());
 app.use(express.static(__dirname + '/html'));
 
 app.get('/', function(req, res) {
@@ -28,6 +28,21 @@ app.post('/upload', function(req, res) {
         	}
         });
     });
+}); 
+app.post('/input', function(req, res) {
+	var firstkey = req.body.keys1;
+    var secondkey= req.body.keys2;
+    var keylist1 = firstkey.split("+");
+    var keylist2 = secondkey.split("+");
+    if(keylist1.length>0 && keylist2.lenght>0){
+    	var output = [];
+		for(i=0; i<keylist1.length; i++){
+			for(j=0; j<keylist2.length;j++){
+				output.push(keylist1[i]+" " + keylist2[j]);
+			}
+		}  
+		res.send('<a href="/">Upload more</a><br>' + output.join('<br>'));
+    }
 }); 
 
 app.listen(port, function(err) {
